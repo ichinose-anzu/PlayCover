@@ -1,11 +1,6 @@
 name: Build & Release macOS App
 on:
   workflow_dispatch:
-    tags:
-          - "*"
-  push:
-    tags:
-      - "*"
 env:
   CI: true
 jobs:
