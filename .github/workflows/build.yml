@@ -15,6 +15,13 @@ jobs:
           brew install carthage
           carthage update --use-xcframeworks
 
+      - name: Debug carthage log
+        if: failure()
+        run: |
+          LOG=$(find /var/folders -name "carthage-xcodebuild.*.log" 2>/dev/null | head -1)
+          echo "=== LOG: $LOG ==="
+          [ -n "$LOG" ] && grep -iE "error|warning" "$LOG" | head -30
+
       - name: Build
         run: |
           xcodebuild -scheme PlayCover \
