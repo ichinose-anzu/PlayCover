@@ -15,13 +15,23 @@ jobs:
           brew install carthage swiftlint
           carthage update --use-xcframeworks
 
+      - name: Resolve SPM dependencies
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -scheme PlayCover \
+            -project ./PlayCover.xcodeproj \
+            -configuration Release \
+            -destination "generic/platform=macOS"
+
       - name: Build
         run: |
           xcodebuild -scheme PlayCover \
             -configuration Release \
             -destination "generic/platform=macOS" \
             -derivedDataPath build \
-            CODE_SIGNING_ALLOWED=NO
+            FASTLANE=1 \
+            CODE_SIGNING_ALLOWED=NO \
+            EXPANDED_CODE_SIGN_IDENTITY_NAME="-"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
