@@ -20,7 +20,9 @@ jobs:
         run: |
           LOG=$(find /var/folders -name "carthage-xcodebuild.*.log" 2>/dev/null | head -1)
           echo "=== LOG: $LOG ==="
-          [ -n "$LOG" ] && grep -iE "error|warning" "$LOG" | head -30
+          [ -n "$LOG" ] && grep -E "error:|The following build commands failed|Exit code|fatal error" "$LOG" | head -20
+          echo "=== TAIL 40 ==="
+          [ -n "$LOG" ] && tail -40 "$LOG"
 
       - name: Build
         run: |
